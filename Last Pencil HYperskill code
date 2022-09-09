@@ -1,0 +1,75 @@
+def choice():
+    global turn
+    print("Who will be the first (John, Jack):")
+    chosen = input()
+    if chosen == "Jack":
+        turn = 0
+        return "Jack"
+    elif chosen == "John":
+        turn = 1
+        return "John"
+    else:
+        print("Choose between 'John' and 'Jack'")
+        choice()
+        
+def play():
+    global turn
+    global num
+    global bot_memory
+    player = {0:"Jack",1:"John"}
+    while num > 0:
+        print(player[turn%2] + "'s turn:")
+        if player[turn%2] == "John":
+            while True:
+                global remove
+                remove = input()
+                if remove not in ["1","2","3"]:
+                    print("Possible values: '1', '2' or '3'")
+                    continue
+                if int(remove) > num:
+                    print("Too many pencils were taken")
+                    continue
+                bot_memory = int(remove)
+                break
+        else:
+            if num > 3:
+                if num % 4 == 1: # I might lose
+                    remove = 1
+                elif num % 4 == 0:
+                    remove = 3
+                elif num % 4 == 2:
+                    remove = 1
+                elif num % 4 == 3:
+                    remove = 2
+            elif num == 1:
+                remove = 1
+            else:
+                remove = num - 1
+            print(remove)
+        num -= int(remove)
+        if num == 0:
+            print(player[(turn+1)%2] + " won!")
+            break
+        print("|"*num)
+        turn += 1
+            
+        
+
+def startNum():
+    try:
+        num = int(input())
+        if num < 1:
+            print("The number of pencils should be positive")
+            startNum()
+        return num
+    except:
+        print("The number of pencils should be numeric")
+        startNum()
+print("How many pencils would you like to use:")
+bot_memory = 0
+turn = 0
+num = startNum()
+
+m = choice()
+print("|"*num)
+play()
