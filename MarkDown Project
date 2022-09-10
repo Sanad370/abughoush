@@ -1,0 +1,85 @@
+
+def getlevel():
+    global level
+    helpme = input("Level:")
+    if helpme in ["1","2","3","4","5","6"]:
+        level = int(helpme)
+    else:
+        print("The level should be within the range of 1 to 6")
+        getlevel()
+
+memory=""
+while True:
+    h = input("Choose a formatter:")
+    if h == "!help":
+        print("Available formatters: plain bold italic header link inline-code ordered-list unordered-list new-line\nSpecial commands: !help !done")
+        continue
+    elif h == "!done":
+        savetext = open('output.md', 'w')
+        savetext.write(memory)
+        savetext.close()
+        break
+    elif h in ['plain','bold','italic','inline-code' ,'link' ,'header', 'new-line','ordered-list','unordered-list']:
+
+        if h == "plain":
+            text = input("Text:") # input
+            memory+=(f"{text}") # output
+        elif h == "bold":
+            text = input("Text:") # input
+            memory+=("**" + text + "**") #output
+        elif h == "italic":
+            text = input("Text:") # input
+            memory+=("*" + text + "*") #output
+        elif h == 'inline-code':
+            text = input("Text:") #input
+            memory+=(f"`{text}`") # output
+        elif h == "link":
+            label = input("Label")
+            url = input("URL:")
+            memory+=(f"[{label}]({url})") #output
+        elif h == "header":
+            getlevel()
+            text = input("Text:")
+            memory+=(f"{level*'#'} {text}\n") #output
+        elif h == "new-line":
+            memory+= "\n"
+        elif h == "ordered-list":
+            while True:
+                num_o_rows = int(input("Number of rows:"))
+                if num_o_rows <= 0:
+                    print("The number of rows should be greater than zero")
+                    continue
+                else:
+                    break
+            for i in range(num_o_rows):
+                row = input(f"Row #{i+1}:")
+                memory+= f"{i+1}. {row}\n"
+        elif h == "unordered-list":
+            while True:
+                num_o_rows = int(input("Number of rows:"))
+                if num_o_rows <= 0:
+                    print("The number of rows should be greater than zero")
+                    continue
+                else:
+                    break
+            for i in range(num_o_rows):
+                row = input(f"Row #{i+1}:")
+                memory+= f"* {row}\n"
+        print(memory)
+        continue
+    else:
+        print("Unknown formatting type or command")
+        continue
+
+
+
+'''
+print("""# John Lennon
+or ***John Winston Ono Lennon*** was one of *The Beatles*.
+Here are the songs he wrote I like the most:
+* Imagine
+* Norwegian Wood
+* Come Together
+* In My Life
+* ~~Hey Jude~~ (that was *McCartney*)""")
+'''
